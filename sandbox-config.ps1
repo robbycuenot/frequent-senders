@@ -2,13 +2,11 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 
 choco feature enable -n=allowGlobalConfirmation
 
-choco install googlechrome --ignore-checksum
-
 choco install vscode --ignore-checksum
 
-New-Item -Path "C:\Users\WDAGUtilityAccount\AppData\Roaming\Code" -Name "User" -ItemType "directory"
-Copy-Item "C:\vscode\settings\settings.json" -Destination "C:\Users\WDAGUtilityAccount\AppData\Roaming\Code\User"
-Copy-Item "C:\vscode\extensions\*" -Destination "C:\Users\WDAGUtilityAccount\.vscode" -Recurse
+choco install thunderbird --ignore-checksum
+
+choco install python --ignore-checksum
 
 $LAYOUT_START_MENU_TASKBAR_BLANK = @"
 <?xml version="1.0" encoding="utf-8"?>
@@ -81,3 +79,7 @@ function TweakApplyStartTaskbarLayout(){
 }
 
 TweakApplyStartTaskbarLayout
+
+$pythonScriptUrl = https://raw.githubusercontent.com/robbycuenot/frequent-senders/main/frequent-senders.py
+Invoke-WebRequest -Uri $pythonScriptUrl -OutFile ~\Desktop\frequent-senders.py
+
