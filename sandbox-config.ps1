@@ -80,6 +80,6 @@ function TweakApplyStartTaskbarLayout(){
 
 TweakApplyStartTaskbarLayout
 
-$pythonScriptUrl = https://raw.githubusercontent.com/robbycuenot/frequent-senders/main/frequent-senders.py
+$pythonScriptUrl = "https://raw.githubusercontent.com/robbycuenot/frequent-senders/main/frequent-senders.py"
 Invoke-WebRequest -Uri $pythonScriptUrl -OutFile ~\Desktop\frequent-senders.py
 
