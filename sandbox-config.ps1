@@ -18,7 +18,8 @@ $VSCODESETTINGS = @"
     "workbench.editorAssociations": {
         "*.pdf": "pdf.preview",
         "*.csv": "gc-excelviewer-csv-editor"
-    }
+    },
+    "window.newWindowDimensions": "maximized"
 }
 "@
 
