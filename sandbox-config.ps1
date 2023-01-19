@@ -83,8 +83,28 @@ TweakApplyStartTaskbarLayout
 $pythonScriptUrl = "https://raw.githubusercontent.com/robbycuenot/frequent-senders/main/frequent-senders.py"
 Invoke-WebRequest -Uri $pythonScriptUrl -OutFile ~\Desktop\frequent-senders.py
 
+# Make `refreshenv` available right away, by defining the $env:ChocolateyInstall
+# variable and importing the Chocolatey profile module.
+# Note: Using `. $PROFILE` instead *may* work, but isn't guaranteed to.
+$env:ChocolateyInstall = Convert-Path "$((Get-Command choco).Path)\..\.."   
+Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
+
+# refreshenv is now an alias for Update-SessionEnvironment
+# (rather than invoking refreshenv.cmd, the *batch file* for use with cmd.exe)
+# This should make git.exe accessible via the refreshed $env:PATH, so that it
+# can be called by name only.
+refreshenv
+
+python -m pip install --upgrade pip
+
 pip install tqdm
 
 pip install matplotlib
+
+cd ~\Desktop
+
+echo "cd ~\Desktop" >> $PSHOME\Profile.ps1
+
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope LocalMachine -Force
 
 Write-Host "\nSetup complete!"
