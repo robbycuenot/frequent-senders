@@ -109,4 +109,4 @@ cd ~\Desktop
 
 echo "cd ~\Desktop" >> $PSHOME\Profile.ps1
 
-Write-Host "\nSetup complete!"
+Write-Host "Setup complete!"
