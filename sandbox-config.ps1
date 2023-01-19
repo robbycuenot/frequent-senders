@@ -1,16 +1,17 @@
+# Install chocolatey and allow scripts to run
 Set-ExecutionPolicy Bypass -Scope LocalMachine -Force
-
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
-
 iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-
 choco feature enable -n=allowGlobalConfirmation
 
-choco install vscode --ignore-checksum
-
+# Install packages
 choco install thunderbird --ignore-checksum
-
 choco install python --ignore-checksum
+
+# Install VSCode and extensions
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force; 
+Install-Script Install-VSCode -Force; 
+Install-VSCode.ps1 -AdditionalExtensions 'tomoki1207.pdf', 'ms-python.python'
 
 $LAYOUT_START_MENU_TASKBAR_BLANK = @"
 <?xml version="1.0" encoding="utf-8"?>
@@ -43,9 +44,6 @@ function TweakRegedit($path, $name, $value){
 }
 
 function TweakApplyStartTaskbarLayout(){
-
-    
-
     $Layout = $LAYOUT_START_MENU_TASKBAR_BLANK
 
     #Delete layout file if it already exists
@@ -99,14 +97,13 @@ Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 # can be called by name only.
 refreshenv
 
+# Update pip and install dependencies
 python -m pip install --upgrade pip
-
 pip install tqdm
-
 pip install matplotlib
 
+# Change current and default directory to Desktop
 cd ~\Desktop
-
 echo "cd ~\Desktop" >> $PSHOME\Profile.ps1
 
 Write-Host "Setup complete!"
