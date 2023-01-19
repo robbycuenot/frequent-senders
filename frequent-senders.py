@@ -1,4 +1,5 @@
 import mailbox
+import subprocess
 from tqdm import tqdm
 from collections import Counter
 from email.parser import BytesParser
@@ -71,8 +72,15 @@ for row in most_common_data[:10]:
     addylist.append(row[0])
     countlist.append(int(row[1]))
 
-with PdfPages("multipage_pdf.pdf") as pdf:
+with PdfPages("report.pdf") as pdf:
     plt.pie(countlist, labels=addylist, autopct="%.2f%%")
     plt.title("Most frequent senders", fontsize=20)
     pdf.savefig()
     plt.close
+
+edge = subprocess.Popen(
+    [
+        r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
+        r"C:\Users\WDAGUtilityAccount\Desktop\report.pdf",
+    ], creationflags=subprocess.DETACHED_PROCESS, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT
+)
