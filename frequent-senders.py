@@ -54,7 +54,7 @@ def parseinbox():
                 continue
 
 
-def vscode(path, arg):
+def vscode(path, arg, pause=0.5):
     vscode = subprocess.Popen(
         [
             r"C:\Program Files\Microsoft VS Code\Code.exe",
@@ -62,7 +62,7 @@ def vscode(path, arg):
             arg
         ], creationflags=subprocess.DETACHED_PROCESS, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT
     )
-    time.sleep(3)
+    time.sleep(pause)
 
 
 def bar_chart(data, title, xlabel, ylabel, pdf):
@@ -92,7 +92,7 @@ with PdfPages("report.pdf") as pdf:
     bar_chart(addresses, "Most common email addresses",
               "Address", "Count", pdf)
 
-vscode("C:/Users/WDAGUtilityAccount/Desktop", "--disable-workspace-trust")
+vscode("C:/Users/WDAGUtilityAccount/Desktop", "--disable-workspace-trust", 5)
 vscode("C:/Users/WDAGUtilityAccount/Desktop/domains.csv", "-r")
 vscode("C:/Users/WDAGUtilityAccount/Desktop/subdomains.csv", "-r")
 vscode("C:/Users/WDAGUtilityAccount/Desktop/addresses.csv", "-r")
