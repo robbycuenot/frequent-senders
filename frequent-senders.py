@@ -8,11 +8,11 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 
 
-# sldomains = second level domains (facebook.com, ebay.com etc)
-sldomains = []
+# domains = second level domains (facebook.com, ebay.com etc)
+domains = []
 
-# fulldomains = second level domain + all subdomains (mail.service.facebook.com)
-fulldomains = []
+# subdomains = second level domain + all subdomains (mail.service.facebook.com)
+subdomains = []
 
 # addresses = entire email address (sender12345@mail.service.facebook.com)
 addresses = []
@@ -29,58 +29,63 @@ def write_list_to_csv(data, filename):
             csvfile.write("\n")
 
 
-def readinbox():
+def parseinbox():
     INBOX = "C:/Users/WDAGUtilityAccount/Desktop/INBOX"
     mymail = mailbox.mbox(INBOX, factory=BytesParser(policy=compat32).parse)
-
     print(
         "\nProcessing inbox file... \n(a progress bar will appear once the mailbox has been loaded into memory)"
     )
-
     for _, message in enumerate(tqdm(mymail)):
         messageID = message["Message-ID"]
         if messageID == None:
             continue
-
         sender = message["from"]
         if sender is not None and isinstance(sender, str):
             try:
                 address = sender.rsplit("<")[-1].rstrip().rstrip(">").rstrip()
                 addresses.append(address)
-                fulldomain = address.rsplit("@", 1)[1]
-                fulldomains.append(fulldomain)
-                domainsplit = fulldomain.rsplit(".", 2)
-                sldomain = domainsplit[-2] + "." + domainsplit[-1]
-                sldomains.append(sldomain)
+                subdomain = address.rsplit("@", 1)[1]
+                subdomains.append(subdomain)
+                domainsplit = subdomain.rsplit(".", 2)
+                domain = domainsplit[-2] + "." + domainsplit[-1]
+                domains.append(domain)
             except:
                 continue
 
 
-readinbox()
+def open_pdf(pdf_path):
+    edge = subprocess.Popen(
+        [
+            r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
+            pdf_path,
+        ], creationflags=subprocess.DETACHED_PROCESS, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT
+    )
 
-write_list_to_csv(sldomains, "sldomains.csv")
-write_list_to_csv(fulldomains, "fulldomains.csv")
+
+def bar_chart(data, title, xlabel, ylabel, pdf):
+    most_common_list = Counter(data).most_common()[:10]
+    # Create the bar chart
+    plt.barh(*zip(*most_common_list))
+    # Add labels and title
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.title(title)
+    plt.tight_layout()
+    # Save the chart
+    pdf.savefig()
+    plt.close()
+
+
+parseinbox()
+
+write_list_to_csv(domains, "domains.csv")
+write_list_to_csv(subdomains, "subdomains.csv")
 write_list_to_csv(addresses, "addresses.csv")
 
-
-data_counter = Counter(sldomains)
-most_common_data = data_counter.most_common()
-addylist = []
-countlist = []
-
-for row in most_common_data[:10]:
-    addylist.append(row[0])
-    countlist.append(int(row[1]))
-
 with PdfPages("report.pdf") as pdf:
-    plt.pie(countlist, labels=addylist, autopct="%.2f%%")
-    plt.title("Most frequent senders", fontsize=20)
-    pdf.savefig()
-    plt.close
+    bar_chart(domains, "Most common domains", "Domain", "Count", pdf)
+    bar_chart(subdomains, "Most common subdomains", "Domain", "Count", pdf)
+    bar_chart(addresses, "Most common email addresses",
+              "Address", "Count", pdf)
 
-edge = subprocess.Popen(
-    [
-        r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
-        r"C:\Users\WDAGUtilityAccount\Desktop\report.pdf",
-    ], creationflags=subprocess.DETACHED_PROCESS, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT
-)
+open_pdf("report.pdf")
