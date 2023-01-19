@@ -34,7 +34,7 @@ def readinbox():
     mymail = mailbox.mbox(INBOX, factory=BytesParser(policy=compat32).parse)
 
     print(
-        "\nReading inbox file... \n(a progress bar will appear once the mailbox has been loaded into memory)"
+        "\nProcessing inbox file... \n(a progress bar will appear once the mailbox has been loaded into memory)"
     )
 
     for _, message in enumerate(tqdm(mymail)):
