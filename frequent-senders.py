@@ -56,7 +56,7 @@ def parseinbox():
 def open_pdf(pdf_path):
     edge = subprocess.Popen(
         [
-            r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
+            r"C:\Program Files\Microsoft VS Code\Code.exe",
             pdf_path,
         ], creationflags=subprocess.DETACHED_PROCESS, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT
     )
@@ -71,6 +71,7 @@ def bar_chart(data, title, xlabel, ylabel, pdf):
     plt.ylabel(ylabel)
     plt.title(title)
     plt.tight_layout()
+    plt.gca().invert_yaxis()
     # Save the chart
     pdf.savefig()
     plt.close()
