@@ -11,7 +11,19 @@ choco install python --ignore-checksum
 # Install VSCode and extensions
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force; 
 Install-Script Install-VSCode -Force; 
-Install-VSCode.ps1 -AdditionalExtensions 'tomoki1207.pdf', 'ms-python.python'
+Install-VSCode.ps1 -AdditionalExtensions 'tomoki1207.pdf', 'ms-python.python', 'GrapeCity.gc-excelviewer'
+
+$VSCODESETTINGS = @"
+{
+    "workbench.editorAssociations": {
+        "*.pdf": "pdf.preview",
+        "*.csv": "gc-excelviewer-csv-editor"
+    }
+}
+"@
+
+# Settings for file type associations
+$VSCODESETTINGS | Out-File C:\Users\WDAGUtilityAccount\AppData\Roaming\Code\User\Settings.json -Encoding ASCII
 
 $LAYOUT_START_MENU_TASKBAR_BLANK = @"
 <?xml version="1.0" encoding="utf-8"?>

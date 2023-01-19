@@ -1,3 +1,4 @@
+import time
 import mailbox
 import subprocess
 from tqdm import tqdm
@@ -53,13 +54,15 @@ def parseinbox():
                 continue
 
 
-def open_pdf(pdf_path):
-    edge = subprocess.Popen(
+def vscode(path, arg):
+    vscode = subprocess.Popen(
         [
             r"C:\Program Files\Microsoft VS Code\Code.exe",
-            pdf_path,
+            path,
+            arg
         ], creationflags=subprocess.DETACHED_PROCESS, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT
     )
+    time.sleep(3)
 
 
 def bar_chart(data, title, xlabel, ylabel, pdf):
@@ -89,4 +92,8 @@ with PdfPages("report.pdf") as pdf:
     bar_chart(addresses, "Most common email addresses",
               "Address", "Count", pdf)
 
-open_pdf("report.pdf")
+vscode("C:/Users/WDAGUtilityAccount/Desktop", "--disable-workspace-trust")
+vscode("C:/Users/WDAGUtilityAccount/Desktop/domains.csv", "-r")
+vscode("C:/Users/WDAGUtilityAccount/Desktop/subdomains.csv", "-r")
+vscode("C:/Users/WDAGUtilityAccount/Desktop/addresses.csv", "-r")
+vscode("C:/Users/WDAGUtilityAccount/Desktop/report.pdf", "-r")
