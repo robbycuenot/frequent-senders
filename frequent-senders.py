@@ -24,6 +24,7 @@ def write_list_to_csv(data, filename):
     most_common_data = data_counter.most_common()
     with open(filename, "w") as csvfile:
         print("Writing to " + filename + "...")
+        csvfile.write(filename.split('.')[0] + ", " + "count")
         for row in most_common_data:
             # write each item on a new line
             csvfile.write(row[0] + ", " + str(row[1]))
