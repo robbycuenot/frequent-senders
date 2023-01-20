@@ -92,7 +92,7 @@ with PdfPages("report.pdf") as pdf:
     bar_chart(addresses, "Most common email addresses",
               "Address", "Count", pdf)
 
-vscode("C:/Users/WDAGUtilityAccount/Desktop", "--disable-workspace-trust", 5)
+vscode("C:/Users/WDAGUtilityAccount/Desktop", "--disable-workspace-trust", 10)
 vscode("C:/Users/WDAGUtilityAccount/Desktop/domains.csv", "-r")
 vscode("C:/Users/WDAGUtilityAccount/Desktop/subdomains.csv", "-r")
 vscode("C:/Users/WDAGUtilityAccount/Desktop/addresses.csv", "-r")
