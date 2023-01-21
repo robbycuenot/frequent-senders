@@ -19,20 +19,8 @@ subdomains = []
 addresses = []
 
 
-def write_list_to_csv(data, filename):
-    data_counter = Counter(data)
-    most_common_data = data_counter.most_common()
-    with open(filename, "w") as csvfile:
-        print("Writing to " + filename + "...")
-        csvfile.write(filename.split('.')[0] + ", " + "count")
-        csvfile.write("\n")
-        for row in most_common_data:
-            # write each item on a new line
-            csvfile.write(row[0] + ", " + str(row[1]))
-            csvfile.write("\n")
-
-
 def parseinbox():
+    # Parse the inbox file and store the results in the lists above
     INBOX = "C:/Users/WDAGUtilityAccount/Desktop/INBOX"
     mymail = mailbox.mbox(INBOX, factory=BytesParser(policy=compat32).parse)
     print(
@@ -56,18 +44,22 @@ def parseinbox():
                 continue
 
 
-def vscode(path, arg, pause=0.5):
-    vscode = subprocess.Popen(
-        [
-            r"C:\Program Files\Microsoft VS Code\Code.exe",
-            path,
-            arg
-        ], creationflags=subprocess.DETACHED_PROCESS, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT
-    )
-    time.sleep(pause)
+def write_list_to_csv(data, filename):
+    # Write the list to a csv file
+    data_counter = Counter(data)
+    most_common_data = data_counter.most_common()
+    with open(filename, "w") as csvfile:
+        print("Writing to " + filename + "...")
+        csvfile.write(filename.split('.')[0] + ", " + "count")
+        csvfile.write("\n")
+        for row in most_common_data:
+            # write each item on a new line
+            csvfile.write(row[0] + ", " + str(row[1]))
+            csvfile.write("\n")
 
 
 def bar_chart(data, title, xlabel, ylabel, pdf):
+    # Create a bar chart and save it to a pdf file
     most_common_list = Counter(data).most_common()[:10]
     # Create the bar chart
     plt.barh(*zip(*most_common_list))
@@ -80,6 +72,18 @@ def bar_chart(data, title, xlabel, ylabel, pdf):
     # Save the chart
     pdf.savefig()
     plt.close()
+
+
+def vscode(path, arg, pause=0.5):
+    # Open a file in VS Code
+    vscode = subprocess.Popen(
+        [
+            r"C:\Program Files\Microsoft VS Code\Code.exe",
+            path,
+            arg
+        ], creationflags=subprocess.DETACHED_PROCESS, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT
+    )
+    time.sleep(pause)
 
 
 parseinbox()
